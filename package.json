@@ -1,7 +1,7 @@
 {
-  "name": "electron-react-parcel",
-  "version": "1.0.0",
-  "description": "Electron app build using ReactJS and Parcel web application bundler",
+  "name": "kitsu-launcher",
+  "version": "0.1.0",
+  "description": "Your anime/manga tracker for Kitsu",
   "main": "src/electron.js",
   "scripts": {
     "react-start": "parcel -p 3000 index.html --out-dir build",
@@ -12,15 +12,7 @@
     "build": "yarn clean-build && yarn react-build && yarn electron-build",
     "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron . \""
   },
-  "keywords": [
-    "boskysoft",
-    "electron",
-    "react",
-    "parcel",
-    "electron-react-parcel",
-    "electron react parcel"
-  ],
-  "author": "Yogesh Kumar <yogesh@boskysoft.com>",
+  "author": "Alperen Elhan <alperen@elhan.io>",
   "license": "MIT",
   "dependencies": {
     "electron-is-dev": "1.1.0",
@@ -41,7 +33,7 @@
     ]
   },
   "build": {
-    "appId": "com.boskysoft",
+    "appId": "io.elhan.KitsuLauncher",
     "files": [
       "src/electron.js",
       "src/assets/*",
@@ -56,9 +48,9 @@
       "icon": "src/assets/logo.png"
     },
     "linux": {
-      "target": "deb",
+      "target": ["deb", "appimage"],
       "icon": "src/assets/logo.png",
-      "category": "Development"
+      "category": "Utility"
     }
   },
   "homepage": "./",
