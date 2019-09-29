@@ -1,0 +1,93 @@
+{
+  "name": "electron-react-parcel",
+  "version": "1.0.0",
+  "description": "Electron app build using ReactJS and Parcel web application bundler",
+  "main": "src/electron.js",
+  "scripts": {
+    "react-start": "parcel -p 3000 index.html --out-dir build",
+    "react-build": "parcel build index.html --out-dir build --public-url ./",
+    "lint": "eslint src/",
+    "electron-build": "electron-builder -mwl",
+    "clean-build": "rm -rf build/ .cache dist/",
+    "build": "yarn clean-build && yarn react-build && yarn electron-build",
+    "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron . \""
+  },
+  "keywords": [
+    "boskysoft",
+    "electron",
+    "react",
+    "parcel",
+    "electron-react-parcel",
+    "electron react parcel"
+  ],
+  "author": "Yogesh Kumar <yogesh@boskysoft.com>",
+  "license": "MIT",
+  "dependencies": {
+    "electron-is-dev": "1.1.0",
+    "react": "16.10.1",
+    "react-dom": "16.10.1",
+    "semantic-ui-css": "2.4.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "build": {
+    "appId": "com.boskysoft",
+    "files": [
+      "src/electron.js",
+      "src/assets/*",
+      "build/**/*"
+    ],
+    "mac": {
+      "target": "dmg",
+      "icon": "src/assets/logo.png"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "src/assets/logo.png"
+    },
+    "linux": {
+      "target": "deb",
+      "icon": "src/assets/logo.png",
+      "category": "Development"
+    }
+  },
+  "homepage": "./",
+  "devDependencies": {
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-angular": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
+    "babel-core": "6.26.3",
+    "babel-eslint": "^10.0.3",
+    "babel-plugin-transform-object-rest-spread": "6.26.0",
+    "babel-plugin-transform-react-jsx": "6.24.1",
+    "babel-preset-env": "1.7.0",
+    "babel-preset-react": "6.24.1",
+    "concurrently": "4.1.2",
+    "cross-env": "6.0.0",
+    "electron": "6.0.10",
+    "electron-builder": "21.2.0",
+    "eslint": "^6.5.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^22.17.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react": "^7.14.3",
+    "husky": "^3.0.7",
+    "lint-staged": "^9.4.0",
+    "parcel-bundler": "1.12.3",
+    "prettier": "^1.18.2",
+    "wait-on": "3.3.0"
+  }
+}
