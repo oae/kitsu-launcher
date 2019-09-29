@@ -10,7 +10,7 @@
     "electron-build": "electron-builder -mwl",
     "clean-build": "rm -rf build/ .cache dist/",
     "build": "yarn clean-build && yarn react-build && yarn electron-build",
-    "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron . \""
+    "start": "electron ."
   },
   "author": "Alperen Elhan <alperen@elhan.io>",
   "license": "MIT",
