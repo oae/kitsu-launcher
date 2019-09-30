@@ -1,5 +1,5 @@
 @font-face {
-  font-family: "AlmostJapanese";
+  font-family: 'AlmostJapanese';
   src: url('./assets/almostJapanese.ttf');
 }
 
@@ -64,6 +64,21 @@ body img {
   left: 135px;
   font-size: 45px;
   top: -35px;
+  font-weight: bold;
   color: white;
-  text-shadow: 2px 2px 2px #3b064d;
+  /* animation: glow 1s ease-in-out infinite alternate; */
+  text-shadow: 0 0 5px #3b064d, 0 0 10px #3b064d, 0 0 15px #3b064d, 0 0 20px #3b064d, 0 0 25px #3b064d, 0 0 30px #3b064d,
+    0 0 35px #3b064d;
+  z-index: -3;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #e60073, 0 0 20px #e60073, 0 0 25px #e60073, 0 0 30px #e60073,
+      0 0 35px #e60073;
+  }
+  to {
+    text-shadow: 0 0 10px #fff, 0 0 20px #e60073, 0 0 20px #e60073, 0 0 25px #e60073, 0 0 30px #e60073, 0 0 35px #e60073,
+      0 0 40px #e60073;
+  }
 }
