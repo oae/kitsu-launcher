@@ -16,6 +16,7 @@ function createWindow() {
     width: 0,
     height: 0,
     frame: false,
+    show: false,
     resizable: false,
     transparent: true,
     minimizable: false,
@@ -54,6 +55,23 @@ function createWindow() {
   });
 }
 
+function toggleWindowVisibility() {
+  if (mainWindow.isVisible()) {
+    mainWindow.hide();
+  } else {
+    const currentDisplay = screen.getDisplayNearestPoint(
+      screen.getCursorScreenPoint()
+    );
+    mainWindow.setPosition(
+      currentDisplay.bounds.x + 50,
+      currentDisplay.bounds.y + 50
+    );
+    mainWindow.center();
+    mainWindow.show();
+    mainWindow.setAlwaysOnTop(true);
+  }
+}
+
 app.on('ready', () => {
   setTimeout(createWindow, 500);
 });
@@ -72,21 +90,7 @@ app.on('activate', () => {
 
 app.on('ready', () => {
   // Register a 'Alt+Space' shortcut listener.
-  globalShortcut.register('Alt+Space', () => {
-    if (mainWindow.isVisible()) {
-      mainWindow.hide();
-    } else {
-      const currentDisplay = screen.getDisplayNearestPoint(
-        screen.getCursorScreenPoint()
-      );
-      mainWindow.setPosition(
-        currentDisplay.bounds.x + 50,
-        currentDisplay.bounds.y + 50
-      );
-      mainWindow.center();
-      mainWindow.show();
-    }
-  });
+  globalShortcut.register('Alt+Space', () => toggleWindowVisibility());
 });
 
 app.on('will-quit', () => {
