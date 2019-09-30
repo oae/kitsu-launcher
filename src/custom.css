@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "AlmostJapanese";
+  src: url('./assets/almostJapanese.ttf');
+}
+
 body {
   position: absolute;
   width: 100%;
@@ -8,18 +13,57 @@ body {
   -webkit-user-select: none;
 }
 
-body button, body input {
+body button,
+body input {
   -webkit-app-region: no-drag;
 }
 
-body > div {
-  background: white;
+body img {
+  -webkit-user-drag: none;
+}
+
+#root {
   height: 100%;
   border-radius: 10px;
   overflow: hidden;
 }
 
-input {
+#search-text {
   margin: 15px;
-  width: 550px;
+  width: 370px;
+  height: 60px;
+  border-radius: 10px;
+  padding: 10px;
+  padding-left: 140px;
+  border: 1px solid #3b064d;
+  font-size: 30px;
+  color: white;
+  outline: none;
+  background: #3b064d;
+  box-shadow: 3px 2px 5px 0px rgba(0, 0, 0, 0.75);
+}
+
+#chibi {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  top: 0px;
+  margin-top: -60px;
+  left: -40px;
+}
+
+#search-container {
+  margin-top: 150px;
+  margin-left: 50px;
+  position: relative;
+}
+
+#title {
+  font-family: 'AlmostJapanese';
+  position: absolute;
+  left: 135px;
+  font-size: 45px;
+  top: -35px;
+  color: white;
+  text-shadow: 2px 2px 2px #3b064d;
 }

@@ -26,7 +26,7 @@ function createWindow() {
   });
   mainWindow = new BrowserWindow({
     width: 600,
-    height: 50,
+    height: 500,
     frame: false,
     resizable: false,
     transparent: true,
