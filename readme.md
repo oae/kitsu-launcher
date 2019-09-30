@@ -8,13 +8,13 @@
 
 ## Scripts
 
-`yarn start` will start the Electron app.
-`yarn build` will build the React app and package it along the Electron app.
+* `yarn start` will start the Electron app.
+* `yarn build` will build the React app and package it along the Electron app.
 
 ## React Scripts
 
-`yarn react-start` will start the React app at <http://localhost:3000.>
-`yarn react-build` will build the React app and package it in build folder.
+* `yarn react-start` will start the React app at <http://localhost:3000.>
+* `yarn react-build` will build the React app and package it in build folder.
 
 ## License
 
