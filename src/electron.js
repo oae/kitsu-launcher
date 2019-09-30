@@ -40,7 +40,6 @@ function createWindow() {
     alwaysOnTop: true,
     skipTaskbar: true,
     fullscreenable: false,
-    title: 'Kitsu Launcher',
     autoResize: true,
     parent: bgWindow,
   });
@@ -50,13 +49,20 @@ function createWindow() {
       ? 'http://localhost:3000'
       : `file://${path.join(__dirname, '../build/index.html')}`
   );
+
   mainWindow.on('closed', () => {
+    mainWindow = null;
+  });
+
+  bgWindow.on('closed', () => {
+    bgWindow = null;
     mainWindow = null;
   });
 }
 
 function toggleWindowVisibility() {
   if (mainWindow.isVisible()) {
+    bgWindow.hide();
     mainWindow.hide();
   } else {
     const currentDisplay = screen.getDisplayNearestPoint(
@@ -67,13 +73,17 @@ function toggleWindowVisibility() {
       currentDisplay.bounds.y + 50
     );
     mainWindow.center();
-    mainWindow.show();
     mainWindow.setAlwaysOnTop(true);
+    mainWindow.show();
+    bgWindow.show();
   }
 }
 
 app.on('ready', () => {
-  setTimeout(createWindow, 500);
+  setTimeout(() => {
+    createWindow();
+    globalShortcut.register('Alt+Space', () => toggleWindowVisibility());
+  }, 500);
 });
 
 app.on('window-all-closed', () => {
@@ -83,14 +93,12 @@ app.on('window-all-closed', () => {
 });
 
 app.on('activate', () => {
-  if (mainWindow === null) {
+  if (mainWindow === null || bgWindow === null) {
     createWindow();
+  } else {
+    mainWindow.show();
+    bgWindow.show();
   }
-});
-
-app.on('ready', () => {
-  // Register a 'Alt+Space' shortcut listener.
-  globalShortcut.register('Alt+Space', () => toggleWindowVisibility());
 });
 
 app.on('will-quit', () => {

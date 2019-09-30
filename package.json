@@ -10,7 +10,8 @@
     "electron-build": "electron-builder -mwl",
     "clean-build": "rm -rf build/ .cache dist/",
     "build": "yarn clean-build && yarn react-build && yarn electron-build",
-    "start": "electron ."
+    "start": "electron .",
+    "debug": "electron --inspect-brk=4884 ."
   },
   "author": "Alperen Elhan <alperen@elhan.io>",
   "license": "MIT",
