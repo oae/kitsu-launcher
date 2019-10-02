@@ -1,0 +1,14 @@
+#search-text {
+  margin: 15px;
+  width: 370px;
+  height: 60px;
+  border-radius: 10px;
+  padding: 10px;
+  padding-left: 140px;
+  border: 1px solid #3b064d;
+  font-size: 30px;
+  color: white;
+  outline: none;
+  background: #3b064d;
+  box-shadow: 3px 2px 5px 0px rgba(0, 0, 0, 0.75);
+}

@@ -2,7 +2,7 @@
   "name": "kitsu-launcher",
   "version": "0.1.0",
   "description": "Your anime/manga tracker for Kitsu",
-  "main": "src/electron.js",
+  "main": "src/main.js",
   "scripts": {
     "react-start": "parcel -p 3000 index.html --out-dir build",
     "react-build": "parcel build index.html --out-dir build --public-url ./",
