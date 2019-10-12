@@ -25,12 +25,11 @@ function createWindow() {
     skipTaskbar: true,
     focusable: false,
     fullscreenable: false,
+    useContentSize: true,
     autoResize: true,
   });
 
   mainWindow = new BrowserWindow({
-    width: 600,
-    height: 500,
     frame: false,
     resizable: false,
     show: false,
@@ -41,6 +40,7 @@ function createWindow() {
     skipTaskbar: true,
     fullscreenable: false,
     autoResize: true,
+    useContentSize: true,
     parent: bgWindow,
   });
 
