@@ -51,12 +51,11 @@ function createWindow() {
   );
 
   mainWindow.on('closed', () => {
-    mainWindow = null;
+    app.quit();
   });
 
   bgWindow.on('closed', () => {
-    bgWindow = null;
-    mainWindow = null;
+    app.quit();
   });
 }
 
@@ -84,12 +83,6 @@ app.on('ready', () => {
     createWindow();
     globalShortcut.register('Alt+Space', () => toggleWindowVisibility());
   }, 500);
-});
-
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
 });
 
 app.on('activate', () => {
