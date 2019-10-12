@@ -43,7 +43,7 @@
   "build": {
     "appId": "io.elhan.KitsuLauncher",
     "files": [
-      "src/electron.js",
+      "src/main.js",
       "src/assets/*",
       "build/**/*"
     ],
