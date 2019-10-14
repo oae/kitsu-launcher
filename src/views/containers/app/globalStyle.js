@@ -10,25 +10,36 @@ export const GlobalStyle = createGlobalStyle`
     src: url(${almostJapaneseFont});
   }
 
+  *, *::before, *::after {
+    box-sizing: unset;
+  }
+
+  html, body {
+    width: unset;
+    height: unset;
+    background: unset;
+  }
+
   html {
     display: table;
     overflow: hidden;
   }
 
   body {
-    -webkit-app-region: drag;
     -webkit-user-select: none;
-  }
-
-  body * {
-    -webkit-app-region: no-drag;
   }
 
   body img {
     -webkit-user-drag: none;
+    -webkit-user-select: none;
   }
 
   #root {
     display: inline-block;
+  }
+
+
+  .ant-tag:hover {
+    opacity: unset;
   }
 `;

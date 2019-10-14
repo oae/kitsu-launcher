@@ -6,9 +6,9 @@ import { Media } from '../media/media';
 const SearchInput = styled.input`
   position: absolute;
   z-index: 2;
-  width: 370px;
+  width: calc(100% - 170px);
   height: 60px;
-  border-radius: 10px;
+  border-radius: 3px;
   padding: 10px;
   padding-left: 140px;
   border: 1px solid #3b064d;
@@ -24,20 +24,33 @@ const StyledSearchView = styled.div`
 `;
 
 const StyledSearchResults = styled(OverlayScrollbarsComponent)`
-  width: 390px;
-  max-height: 400px;
+  width: 500px;
+  max-height: 370px;
   margin-left: 120px;
   border-bottom-left-radius: 0px;
   box-shadow: 3px 2px 5px 0px rgba(0, 0, 0, 0.75);
   border-bottom-right-radius: 0px;
-  border-radius: 5px;
+  border-radius: 3px;
   position: relative;
   margin-top: 75px;
+
+  .os-padding {
+    height: 380px !important;
+  }
 `;
 
 const SearchResults = () => {
   return (
-    <StyledSearchResults>
+    <StyledSearchResults
+      options={{
+        overflowBehavior: {
+          x: 'hidden',
+        },
+        scrollbars: {
+          autoHide: 'scroll',
+        },
+      }}
+    >
       <Media />
     </StyledSearchResults>
   );
