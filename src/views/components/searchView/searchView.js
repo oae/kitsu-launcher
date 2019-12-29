@@ -35,7 +35,7 @@ const StyledSearchResults = styled(OverlayScrollbarsComponent)`
   margin-top: 75px;
 
   .os-padding {
-    height: 380px !important;
+    max-height: 380px !important;
   }
 `;
 

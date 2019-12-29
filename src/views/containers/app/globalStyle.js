@@ -42,4 +42,9 @@ export const GlobalStyle = createGlobalStyle`
   .ant-tag:hover {
     opacity: unset;
   }
+
+  .ant-tooltip-inner {
+    min-height: unset;
+  }
+
 `;
