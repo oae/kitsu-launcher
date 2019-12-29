@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Icon, Tag, Tooltip, Progress as ProgressBar, Button } from 'antd';
-import ButtonGroup from 'antd/lib/button/button-group';
+import { Icon, Tag, Tooltip, Progress as ProgressBar } from 'antd';
 import { anime } from '../../../providers/kitsu/kitsu.mock';
 
 const StyledMedia = styled.div`
@@ -63,13 +62,66 @@ const Poster = ({ src }) => {
   );
 };
 
+const StyledMarkAsConsumed = styled.div`
+  .overlay {
+    position: relative;
+  }
+
+  .overlay:hover > :first-child {
+    &:after {
+      content: '';
+      display: block;
+      height: 100px;
+      width: 75px;
+      position: absolute;
+      margin-top: -100px;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 3px;
+      cursor: pointer;
+    }
+  }
+
+  .overlay .anticon {
+    display: none;
+  }
+
+  .overlay:hover .anticon {
+    position: absolute;
+    display: block;
+    right: 17.5px;
+    bottom: 30px;
+    cursor: pointer;
+    font-size: 50px;
+  }
+`;
+
+const MarkAsConsumed = ({ children }) => {
+  return (
+    <StyledMarkAsConsumed>
+      <div className="overlay">
+        {children}
+        <Icon
+          type="check-circle"
+          theme="twoTone"
+          twoToneColor="rgba(23, 177, 134, 0.7)"
+        />
+      </div>
+    </StyledMarkAsConsumed>
+  );
+};
+
 const StyledProgress = styled.div`
   margin-top: 10px;
+
+  .anticon {
+    color: #622fb5;
+  }
 `;
 
 const Progress = ({ content }) => {
   return (
     <StyledProgress>
+      Ep. {content.progress} of {content.anime.episodeCount} - Episode name
       <ProgressBar
         size="small"
         percent={
@@ -81,11 +133,6 @@ const Progress = ({ content }) => {
         showInfo={false}
         strokeColor="#17b186"
       />
-      <ButtonGroup>
-        <Button size="small" icon="minus" />
-        <Button size="small" icon="plus" />
-      </ButtonGroup>
-      Ep. {content.progress} of {content.anime.episodeCount} - Episode name
     </StyledProgress>
   );
 };
@@ -139,7 +186,9 @@ export const Media = () => {
   return (
     <StyledMedia cover={content.coverImage.large}>
       <div className="content-info">
-        <Poster src={content.posterImage.medium} />
+        <MarkAsConsumed>
+          <Poster src={content.posterImage.medium} />
+        </MarkAsConsumed>
         <Description media={anime} />
       </div>
     </StyledMedia>
