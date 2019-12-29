@@ -5,29 +5,11 @@ const isDev = require('electron-is-dev');
 
 const { BrowserWindow, app, globalShortcut } = electron;
 
-let bgWindow;
 let mainWindow;
 let screen;
 
 function createWindow() {
   screen = electron.screen;
-
-  bgWindow = new BrowserWindow({
-    width: 0,
-    height: 0,
-    frame: false,
-    show: false,
-    resizable: false,
-    transparent: true,
-    minimizable: false,
-    maximizable: false,
-    alwaysOnTop: true,
-    skipTaskbar: true,
-    focusable: false,
-    fullscreenable: false,
-    useContentSize: true,
-    autoResize: true,
-  });
 
   mainWindow = new BrowserWindow({
     frame: false,
@@ -41,7 +23,7 @@ function createWindow() {
     fullscreenable: false,
     autoResize: true,
     useContentSize: true,
-    parent: bgWindow,
+    hasShadow: false,
   });
 
   mainWindow.loadURL(
@@ -53,15 +35,10 @@ function createWindow() {
   mainWindow.on('closed', () => {
     app.quit();
   });
-
-  bgWindow.on('closed', () => {
-    app.quit();
-  });
 }
 
 function toggleWindowVisibility() {
   if (mainWindow.isVisible()) {
-    bgWindow.hide();
     mainWindow.hide();
   } else {
     const currentDisplay = screen.getDisplayNearestPoint(
@@ -74,7 +51,6 @@ function toggleWindowVisibility() {
     mainWindow.center();
     mainWindow.setAlwaysOnTop(true);
     mainWindow.show();
-    bgWindow.show();
   }
 }
 
@@ -86,11 +62,10 @@ app.on('ready', () => {
 });
 
 app.on('activate', () => {
-  if (mainWindow === null || bgWindow === null) {
+  if (mainWindow === null) {
     createWindow();
   } else {
     mainWindow.show();
-    bgWindow.show();
   }
 });
 
