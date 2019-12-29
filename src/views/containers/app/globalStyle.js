@@ -14,6 +14,10 @@ export const GlobalStyle = createGlobalStyle`
     box-sizing: unset;
   }
 
+  *:focus {
+    outline: none;
+  }
+
   html, body {
     width: unset;
     height: unset;
