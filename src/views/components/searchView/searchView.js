@@ -1,7 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
-import { Media } from '../media/media';
+import { Content } from '../content/content';
+import {
+  getAnimeContent,
+  getMangaContent,
+} from '../../../core/providers/kitsu/kitsu.mock';
 
 const SearchInput = styled.input`
   position: absolute;
@@ -52,7 +56,8 @@ const SearchResults = () => {
         },
       }}
     >
-      <Media />
+      <Content content={getAnimeContent()} />
+      <Content content={getMangaContent()} />
     </StyledSearchResults>
   );
 };
