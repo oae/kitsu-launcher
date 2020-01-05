@@ -16,6 +16,10 @@ const loginUser = async () => {
   return loginRes.data;
 };
 
+const getImage = image => {
+  return image && (image.original || image.large || image.small || image.tiny);
+};
+
 const getAnimeContent = anime => {
   return {
     id: anime.id,
@@ -26,8 +30,8 @@ const getAnimeContent = anime => {
       releaseDate: anime.anime.startDate,
       popularity: anime.anime.popularityRank,
       rating: anime.anime.ratingRank,
-      cover: anime.anime.coverImage && anime.anime.coverImage.original,
-      poster: anime.anime.posterImage && anime.anime.posterImage.original,
+      cover: getImage(anime.anime.coverImage),
+      poster: getImage(anime.anime.posterImage),
     },
     progress: {
       totalCount: anime.anime.episodeCount,
@@ -49,8 +53,8 @@ const getMangaContent = manga => {
       releaseDate: manga.manga.startDate,
       popularity: manga.manga.popularityRank,
       rating: manga.manga.ratingRank,
-      cover: manga.manga.coverImage && manga.manga.coverImage.original,
-      poster: manga.manga.posterImage && manga.manga.posterImage.original,
+      cover: getImage(manga.manga.coverImage),
+      poster: getImage(manga.manga.posterImage),
     },
     progress: {
       totalCount: manga.manga.chapterCount,
@@ -62,19 +66,10 @@ const getMangaContent = manga => {
   };
 };
 
-const getTrackedAnimes = async keyword => {
-  const userData = await loginUser();
-  const api = new Kitsu({
-    headers: {
-      Authorization: `Bearer ${userData.access_token}`,
-    },
-  });
-  const user = await api.self();
-
+const getTrackedAnimes = async ({ keyword, kitsu }) => {
   let filter = {
-    userId: user.id,
+    userId: kitsu.user.id,
     kind: 'anime',
-    title: keyword,
     status: 'current,on_hold,planned,dropped',
   };
 
@@ -85,7 +80,7 @@ const getTrackedAnimes = async keyword => {
     };
   }
 
-  const libraryData = await api.get('libraryEntries', {
+  const libraryData = await kitsu.api.get('libraryEntries', {
     filter,
     page: { limit: 500 },
     include: 'anime',
@@ -94,17 +89,9 @@ const getTrackedAnimes = async keyword => {
   return [...libraryData.data].map(anime => getAnimeContent(anime));
 };
 
-const getTrackedMangas = async keyword => {
-  const userData = await loginUser();
-  const api = new Kitsu({
-    headers: {
-      Authorization: `Bearer ${userData.access_token}`,
-    },
-  });
-  const user = await api.self();
-
+const getTrackedMangas = async ({ keyword, kitsu }) => {
   let filter = {
-    userId: user.id,
+    userId: kitsu.user.id,
     kind: 'manga',
     status: 'current,on_hold,planned,dropped',
   };
@@ -116,7 +103,7 @@ const getTrackedMangas = async keyword => {
     };
   }
 
-  const libraryData = await api.get('libraryEntries', {
+  const libraryData = await kitsu.api.get('libraryEntries', {
     filter,
     page: { limit: 500 },
     include: 'manga',
@@ -132,4 +119,15 @@ export const getTrackedContent = async keyword => {
   ]);
 
   return _.flatMap(result);
+};
+
+export const login = async () => {
+  const userData = await loginUser();
+  const api = new Kitsu({
+    headers: {
+      Authorization: `Bearer ${userData.access_token}`,
+    },
+  });
+
+  return Promise.all([api.self(), api]);
 };

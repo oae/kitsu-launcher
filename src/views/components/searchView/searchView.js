@@ -72,6 +72,7 @@ const Loading = styled(Icon)`
 
 export const SearchView = () => {
   const search = useSelector(state => state.search);
+  const kitsu = useSelector(state => state.kitsu);
   const dispatch = useDispatch();
 
   return (
@@ -86,7 +87,10 @@ export const SearchView = () => {
           if (e.key !== 'Enter') return;
           dispatch({
             type: 'CONTENT_SEARCH_REQUESTED',
-            payload: e.currentTarget.value,
+            payload: {
+              keyword: e.currentTarget.value,
+              kitsu,
+            },
           });
         }}
       />

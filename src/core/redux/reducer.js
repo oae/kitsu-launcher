@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-const searchContent = (state = { isLoading: false, result: [] }, action) => {
+const searchReducer = (state = { isLoading: false, result: [] }, action) => {
   switch (action.type) {
     case 'CONTENT_SEARCH_REQUESTED':
       return {
@@ -25,6 +25,33 @@ const searchContent = (state = { isLoading: false, result: [] }, action) => {
   }
 };
 
+const kitsuReducer = (
+  state = { isLoggingIn: false, user: null, api: null },
+  action
+) => {
+  switch (action.type) {
+    case 'LOGIN_REQUESTED':
+      return {
+        isLoggingIn: false,
+        user: null,
+        api: null,
+      };
+    case 'LOGIN_INPROGRESS':
+      return {
+        ...state,
+        isLoggingIn: action.payload,
+      };
+    case 'LOGIN_SUCCEEDED':
+      return {
+        ...action.payload,
+        isLoggingIn: false,
+      };
+    default:
+      return state;
+  }
+};
+
 export const root = combineReducers({
-  search: searchContent,
+  search: searchReducer,
+  kitsu: kitsuReducer,
 });
