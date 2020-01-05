@@ -3,7 +3,7 @@
 > Your anime/manga tracker for Kitsu
 
 <p align="center">
-  <img width="600" height="500" src="https://images2.imgbox.com/a2/7e/Ijo7enGu_o.png">
+  <img src="https://images2.imgbox.com/7b/50/P3usPmjU_o.png">
 </p>
 
 ## Scripts
