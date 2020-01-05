@@ -140,50 +140,6 @@ export const anime = {
   ratingTwenty: null,
 };
 
-export const getAnimeContent = () => {
-  return {
-    meta: {
-      title: anime.anime.canonicalTitle,
-      synopsis: anime.anime.synopsis,
-      type: 'anime',
-      releaseDate: anime.anime.startDate,
-      popularity: anime.anime.popularityRank,
-      rating: anime.anime.ratingRank,
-      cover: anime.anime.coverImage.large,
-      poster: anime.anime.posterImage.medium
-    },
-    progress: {
-      totalCount: anime.anime.episodeCount,
-      current: {
-        number: anime.progress,
-        name: "Gungnir, Once More"
-      },
-    }
-  }
-}
-
-export const getMangaContent = () => {
-  return {
-    meta: {
-      title: manga.manga.canonicalTitle,
-      synopsis: manga.manga.synopsis,
-      type: 'manga',
-      releaseDate: manga.manga.startDate,
-      popularity: manga.manga.popularityRank,
-      rating: manga.manga.ratingRank,
-      cover: manga.manga.coverImage && manga.manga.coverImage.large,
-      poster: manga.manga.posterImage && manga.manga.posterImage.medium
-    },
-    progress: {
-      totalCount: manga.manga.chapterCount,
-      current: {
-        number: manga.progress,
-        name: "Gungnir, Once More"
-      },
-    }
-  }
-}
-
 export const manga = {
   id: '46603594',
   type: 'libraryEntries',

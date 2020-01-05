@@ -1,11 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Icon } from 'antd';
 import { Content } from '../content/content';
-import {
-  getAnimeContent,
-  getMangaContent,
-} from '../../../core/providers/kitsu/kitsu.mock';
 
 const SearchInput = styled.input`
   position: absolute;
@@ -44,7 +42,7 @@ const StyledSearchResults = styled(OverlayScrollbarsComponent)`
   }
 `;
 
-const SearchResults = () => {
+const SearchResults = ({ results }) => {
   return (
     <StyledSearchResults
       options={{
@@ -56,13 +54,26 @@ const SearchResults = () => {
         },
       }}
     >
-      <Content content={getAnimeContent()} />
-      <Content content={getMangaContent()} />
+      {results.map(content => (
+        <Content content={content} key={content.id} />
+      ))}
     </StyledSearchResults>
   );
 };
 
+const Loading = styled(Icon)`
+  position: absolute;
+  right: 20px;
+  z-index: 10;
+  color: white;
+  font-size: 50px;
+  top: 31px;
+`;
+
 export const SearchView = () => {
+  const search = useSelector(state => state.search);
+  const dispatch = useDispatch();
+
   return (
     <StyledSearchView>
       <SearchInput
@@ -71,8 +82,16 @@ export const SearchView = () => {
         onFocus={e => {
           e.currentTarget.select();
         }}
+        onKeyPress={async e => {
+          if (e.key !== 'Enter') return;
+          dispatch({
+            type: 'CONTENT_SEARCH_REQUESTED',
+            payload: e.currentTarget.value,
+          });
+        }}
       />
-      <SearchResults />
+      {search.isLoading && <Loading type="loading" />}
+      <SearchResults results={search.result} />
     </StyledSearchView>
   );
 };
