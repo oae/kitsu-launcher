@@ -79,59 +79,17 @@ const Poster = ({ src }) => {
   );
 };
 
-const StyledMarkAsConsumed = styled.div`
-  .overlay {
-    position: relative;
-  }
-
-  .overlay:hover > :first-child {
-    &:after {
-      content: '';
-      display: block;
-      height: 100px;
-      width: 75px;
-      position: absolute;
-      margin-top: -100px;
-      background: rgba(0, 0, 0, 0.7);
-      border-radius: 3px;
-      cursor: pointer;
-    }
-  }
-
-  .overlay .anticon {
-    display: none;
-  }
-
-  .overlay:hover .anticon {
-    position: absolute;
-    display: block;
-    right: 17.5px;
-    bottom: 30px;
-    cursor: pointer;
-    font-size: 50px;
-  }
-`;
-
-const MarkAsConsumed = ({ children }) => {
-  return (
-    <StyledMarkAsConsumed>
-      <div className="overlay">
-        {children}
-        <Icon
-          type="check-circle"
-          theme="twoTone"
-          twoToneColor="rgba(23, 177, 134, 0.7)"
-        />
-      </div>
-    </StyledMarkAsConsumed>
-  );
-};
-
 const StyledProgress = styled.div`
   padding: 5px;
+  text-overflow: ellipsis;
+  overflow: hidden;
 
   .anticon {
     color: #622fb5;
+  }
+
+  .ant-progress-line {
+    display: inline;
   }
 `;
 
@@ -198,9 +156,11 @@ const StyledContent = styled.div`
   position: relative;
   display: flex;
   background: rgba(0, 0, 0, 1);
+  overflow: hidden;
+  white-space: nowrap;
 
   &:first-child {
-    padding-top: 13px;
+    margin-top: 5px;
   }
 
   &::before {
@@ -233,16 +193,50 @@ const StyledContent = styled.div`
     flex-direction: column;
     overflow-x: hidden;
   }
+
+  &:hover .mark-as-consumed,
+  &.active .mark-as-consumed {
+    width: 46px;
+    cursor: pointer;
+  }
 `;
+const StyledMarkAsConsumed = styled.div`
+  width: 2px;
+  background: #00ab64;
+  z-index: 1;
+  height: 100px;
+  margin-top: 5.5px;
+  border-radius: 2px;
+  transform-origin: left;
+  transition: width 0.2s;
+  overflow: hidden;
+
+  .anticon {
+    display: inline-block;
+    overflow: hidden;
+    white-space: pre-wrap;
+    color: white;
+    text-align: center;
+    font-size: 30px;
+    margin-top: 35px;
+    margin-left: 8px;
+  }
+`;
+const MarkAsConsumed = () => {
+  return (
+    <StyledMarkAsConsumed className="mark-as-consumed">
+      <Icon type="check-circle" />
+    </StyledMarkAsConsumed>
+  );
+};
 
 export const Content = ({ content }) => {
   const { meta, progress } = content;
   return (
     <StyledContent cover={meta.cover}>
+      <MarkAsConsumed />
       <div className="content-info">
-        <MarkAsConsumed>
-          <Poster src={meta.poster} />
-        </MarkAsConsumed>
+        <Poster src={meta.poster} />
         <div className="bottom">
           <Meta meta={meta} />
           <Progress progress={progress} />
