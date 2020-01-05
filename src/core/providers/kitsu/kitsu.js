@@ -88,8 +88,7 @@ const getTrackedAnimes = async keyword => {
   const libraryData = await api.get('libraryEntries', {
     filter,
     page: { limit: 500 },
-    include: 'anime,manga',
-    kind: 'anime',
+    include: 'anime',
   });
 
   return [...libraryData.data].map(anime => getAnimeContent(anime));
@@ -120,8 +119,7 @@ const getTrackedMangas = async keyword => {
   const libraryData = await api.get('libraryEntries', {
     filter,
     page: { limit: 500 },
-    include: 'anime,manga',
-    kind: 'manga',
+    include: 'manga',
   });
 
   return [...libraryData.data].map(manga => getMangaContent(manga));
