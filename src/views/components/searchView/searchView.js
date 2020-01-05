@@ -1,11 +1,11 @@
-import React from 'react';
-import styled from 'styled-components';
-import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
-import { useSelector, useDispatch } from 'react-redux';
 import { Icon } from 'antd';
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 import { Content } from '../content/content';
 
-const SearchInput = styled.input`
+const StyledSearchInput = styled.input`
   position: absolute;
   z-index: 2;
   width: calc(100% - 170px);
@@ -20,6 +20,20 @@ const SearchInput = styled.input`
   background: #3b064d;
   box-shadow: 3px 2px 5px 0px rgba(0, 0, 0, 0.75);
 `;
+
+const SearchInput = ({ onSearch }) => {
+  const [keyword, setKeyword] = useState('');
+  return (
+    <StyledSearchInput
+      spellCheck={false}
+      type="text"
+      autoFocus
+      onFocus={e => e.currentTarget.select()}
+      onChange={e => setKeyword(e.currentTarget.value)}
+      onKeyPress={e => e.key === 'Enter' && onSearch({ keyword })}
+    />
+  );
+};
 
 const StyledSearchView = styled.div`
   padding: 15px;
@@ -61,7 +75,7 @@ const SearchResults = ({ results }) => {
   );
 };
 
-const Loading = styled(Icon)`
+const StyledLoading = styled(Icon)`
   position: absolute;
   right: 20px;
   z-index: 10;
@@ -70,31 +84,31 @@ const Loading = styled(Icon)`
   top: 31px;
 `;
 
-export const SearchView = () => {
+const Loading = () => {
   const search = useSelector(state => state.search);
+
+  return search.isLoading && <StyledLoading type="loading" />;
+};
+
+export const SearchView = () => {
   const kitsu = useSelector(state => state.kitsu);
+  const search = useSelector(state => state.search);
   const dispatch = useDispatch();
 
   return (
     <StyledSearchView>
       <SearchInput
-        type="text"
-        autoFocus
-        onFocus={e => {
-          e.currentTarget.select();
-        }}
-        onKeyPress={async e => {
-          if (e.key !== 'Enter') return;
+        onSearch={({ keyword }) =>
           dispatch({
             type: 'CONTENT_SEARCH_REQUESTED',
             payload: {
-              keyword: e.currentTarget.value,
+              keyword,
               kitsu,
             },
-          });
-        }}
+          })
+        }
       />
-      {search.isLoading && <Loading type="loading" />}
+      <Loading />
       <SearchResults results={search.result} />
     </StyledSearchView>
   );
