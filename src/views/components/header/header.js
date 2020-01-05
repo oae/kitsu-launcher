@@ -23,6 +23,8 @@ const Chibi = styled.img`
   height: 200px;
   margin-top: -20px;
   left: -40px;
+  -webkit-app-region: drag !important;
+  -webkit-user-select: none !important;
 `;
 
 const StyledHeader = styled.div`
