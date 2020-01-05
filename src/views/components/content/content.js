@@ -7,7 +7,7 @@ import placeHolderCover from '../../../assets/placholder_cover.png';
 import placeHolderPoster from '../../../assets/placholder_poster.png';
 
 const ContentTitle = ({ title }) => {
-  return title;
+  return <span title={title}>{title}</span>;
 };
 
 const ContentSynopsis = ({ synopsis }) => {
@@ -23,7 +23,14 @@ const ContentSynopsis = ({ synopsis }) => {
 };
 
 const ContentType = ({ type }) => {
-  return <Tag color="#622fb5">{type}</Tag>;
+  return (
+    <Tag
+      style={{ color: 'black' }}
+      color={type === 'anime' ? '#00ffdc' : '#fff700'}
+    >
+      {type}
+    </Tag>
+  );
 };
 
 const ContentReleaseDate = ({ date }) => {
@@ -154,6 +161,9 @@ const StyledMeta = styled.div`
     margin-bottom: 0px;
     color: white;
     font-size: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .meta {
@@ -214,6 +224,14 @@ const StyledContent = styled.div`
     flex-direction: row;
     flex-wrap: nowrap;
     flex-grow: 1;
+    overflow-x: hidden;
+  }
+
+  .content-info .bottom {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    overflow-x: hidden;
   }
 `;
 
@@ -225,7 +243,7 @@ export const Content = ({ content }) => {
         <MarkAsConsumed>
           <Poster src={meta.poster} />
         </MarkAsConsumed>
-        <div style={{ width: '100%' }}>
+        <div className="bottom">
           <Meta meta={meta} />
           <Progress progress={progress} />
         </div>
