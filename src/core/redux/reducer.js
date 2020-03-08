@@ -46,6 +46,15 @@ const kitsuReducer = (
         ...action.payload,
         isLoggingIn: false,
       };
+    case 'REFRESH_TOKEN':
+      return {
+        ...action.payload,
+      };
+    case 'SET_CACHED_USER':
+      return {
+        ...action.payload,
+        isLoggingIn: true,
+      };
     default:
       return state;
   }

@@ -1,15 +1,17 @@
 import Kitsu from 'kitsu';
 import axios from 'axios';
 import querystring from 'querystring';
+
 import _ from 'lodash';
 
-const loginUser = async () => {
+const KITSU_URL = 'https://kitsu.io/api/oauth/token';
+const loginUser = async (username, password) => {
   const loginRes = await axios.post(
-    'https://kitsu.io/api/oauth/token',
+    KITSU_URL,
     querystring.stringify({
       grant_type: 'password',
-      username: process.env.KITSU_USER,
-      password: process.env.KITSU_PASS,
+      username,
+      password,
     })
   );
 
@@ -121,8 +123,15 @@ export const getTrackedContent = async keyword => {
   return _.flatMap(result);
 };
 
-export const login = async () => {
-  const userData = await loginUser();
+const setLocalStrage = userData => {
+  if (userData) {
+    localStorage.setItem('accessToken', userData.access_token);
+    localStorage.setItem('refreshToken', userData.refresh_token);
+    localStorage.setItem(
+      'expiresDate',
+      userData.created_at + userData.expires_in
+    );
+  }
   const api = new Kitsu({
     headers: {
       Authorization: `Bearer ${userData.access_token}`,
@@ -130,4 +139,20 @@ export const login = async () => {
   });
 
   return Promise.all([api.self(), api]);
+};
+export const refreshToken = async () => {
+  const userData = await axios.post(
+    KITSU_URL,
+    querystring.stringify({
+      grant_type: 'refresh_token',
+      refresh_token: localStorage.getItem('refreshToken'),
+    })
+  );
+
+  return setLocalStrage(userData.data);
+};
+export const login = async ({ email, password }) => {
+  const userData = await loginUser(email, password);
+
+  return setLocalStrage(userData);
 };
