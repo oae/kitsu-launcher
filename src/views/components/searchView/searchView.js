@@ -35,9 +35,7 @@ const SearchInput = ({ onSearch }) => {
   );
 };
 
-const StyledSearchView = styled.div`
-  padding: 15px;
-`;
+const StyledSearchView = styled.div``;
 
 const StyledSearchResults = styled(OverlayScrollbarsComponent)`
   width: 500px;

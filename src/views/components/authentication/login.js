@@ -10,7 +10,6 @@ const StyledLogin = styled.div`
   max-height: 370px;
   margin-left: 145px;
   border-bottom-left-radius: 0px;
-  box-shadow: 3px 2px 5px 0px rgba(0, 0, 0, 0.75);
   border-bottom-right-radius: 0px;
   border-radius: 3px;
   font-size: 12px;
