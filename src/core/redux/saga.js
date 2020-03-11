@@ -6,22 +6,17 @@ import {
   refreshToken,
 } from '../providers/kitsu/kitsu';
 
-import { appLogin } from '../providers/firebase/firebase';
-
 function* queryContent(action) {
   yield put({ type: 'CONTENT_SEARCH_LOADING', payload: true });
   const result = yield call(getTrackedContent, action.payload);
   yield put({ type: 'CONTENT_SEARCH_SUCCEEDED', payload: result });
 }
 
-function* firebaseLogin(action) {
+function* kitsuLogin(action) {
   yield put({ type: 'LOGIN_INPROGRESS', payload: true });
-  const [userResult] = yield call(appLogin, action.payload);
-  if (userResult) {
-    const [user, api] = yield call(login, action.payload);
-    localStorage.setItem('userId', user.id);
-    yield put({ type: 'LOGIN_SUCCEEDED', payload: { user, api } });
-  }
+  const [user, api] = yield call(login, action.payload);
+  localStorage.setItem('userId', user.id);
+  yield put({ type: 'LOGIN_SUCCEEDED', payload: { user, api } });
 }
 
 function* kitsuRefreshToken() {
@@ -37,7 +32,7 @@ function* kitsuRefreshToken() {
 export function* root() {
   yield all([
     takeLatest('CONTENT_SEARCH_REQUESTED', queryContent),
-    takeLatest('LOGIN_REQUESTED', firebaseLogin),
+    takeLatest('LOGIN_REQUESTED', kitsuLogin),
     takeLatest('REFRESH_TOKEN', kitsuRefreshToken),
   ]);
 }

@@ -4,23 +4,37 @@ import { Form, Input, Icon, Button } from 'antd';
 import { useDispatch } from 'react-redux';
 
 const StyledLogin = styled.div`
-  padding-top: 50px;
-  display: flex;
+  // padding-top: 50px;
+  // display: flex;
+  // width: 500px;
+  // max-height: 370px;
+  // margin-left: 145px;
+  // border-bottom-left-radius: 0px;
+  // border-bottom-right-radius: 0px;
+  // border-radius: 3px;
+  // font-size: 12px;
+  // z-index: 2;
+  // align-items: center;
+  // margin-top: 75px;
+
+  z-index: 2;
   width: 500px;
   max-height: 370px;
-  margin-left: 145px;
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
+  display: inline-flex;
   border-radius: 3px;
-  font-size: 12px;
-  z-index: 2;
+  padding: 10px;
+  padding-left: 140px;
+  border: 1px solid #3b064d;
+  font-size: 30px;
+  color: white;
+  outline: none;
+  background: #3b064d;
   align-items: center;
-  margin-top: 75px;
+  box-shadow: 3px 2px 5px 0px rgba(0, 0, 0, 0.75);
 `;
 
 const StyledForm = styled(Form)`
   witdh: 100%;
-  margin-left: 95px;
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
   border-radius: 3px;
