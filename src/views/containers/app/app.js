@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
+
+import { Provider, useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 
@@ -8,6 +9,9 @@ import { Header } from '../../components/header/header';
 import { SearchView } from '../../components/searchView/searchView';
 import { GlobalStyle } from './globalStyle';
 import store from '../../../core/redux/store';
+import { Login } from '../../components/authentication/login';
+import { Logout } from '../../components/authentication/logout';
+import { checkCache } from '../../../core/providers/cache/cache';
 
 const StyledApp = styled.div`
   margin-top: 60px;
@@ -16,15 +20,30 @@ const StyledApp = styled.div`
 `;
 
 const App = () => {
+  const kitsuUser = useSelector(state =>
+    state.kitsu.user ? state.kitsu.user.id : null
+  );
+
+  checkCache();
   return (
-    <Provider store={store}>
-      <StyledApp>
-        <GlobalStyle />
-        <Header />
-        <SearchView />
-      </StyledApp>
-    </Provider>
+    <StyledApp>
+      <GlobalStyle />
+      <Header />
+      {kitsuUser ? (
+        <>
+          <SearchView />
+          <Logout />
+        </>
+      ) : (
+        <Login />
+      )}
+    </StyledApp>
   );
 };
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+);

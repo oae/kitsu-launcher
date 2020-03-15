@@ -51,4 +51,11 @@ export const GlobalStyle = createGlobalStyle`
     min-height: unset;
   }
 
+  .ant-message-notice {
+    text-align: left;
+  }
+
+  .ant-message-notice-content {
+    margin-left: 200px;
+  }
 `;

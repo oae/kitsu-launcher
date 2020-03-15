@@ -41,7 +41,26 @@ const kitsuReducer = (
         ...state,
         isLoggingIn: action.payload,
       };
+    case 'LOGIN_FAIL':
+      return {
+        ...state,
+        isLoggingIn: false,
+      };
     case 'LOGIN_SUCCEEDED':
+      return {
+        ...action.payload,
+        isLoggingIn: false,
+      };
+    case 'REFRESH_TOKEN':
+      return {
+        ...action.payload,
+      };
+    case 'SET_CACHED_USER':
+      return {
+        ...action.payload,
+        isLoggingIn: true,
+      };
+    case 'LOGOUT':
       return {
         ...action.payload,
         isLoggingIn: false,

@@ -1,19 +1,26 @@
 import Kitsu from 'kitsu';
 import axios from 'axios';
 import querystring from 'querystring';
+import { message } from 'antd';
+
 import _ from 'lodash';
 
-const loginUser = async () => {
-  const loginRes = await axios.post(
-    'https://kitsu.io/api/oauth/token',
-    querystring.stringify({
-      grant_type: 'password',
-      username: process.env.KITSU_USER,
-      password: process.env.KITSU_PASS,
-    })
-  );
-
-  return loginRes.data;
+const KITSU_URL = 'https://kitsu.io/api/oauth/token';
+const loginUser = async (username, password) => {
+  const loginRes = await axios
+    .post(
+      KITSU_URL,
+      querystring.stringify({
+        grant_type: 'password',
+        username,
+        password,
+      })
+    )
+    .catch(() => {
+      message.config({ maxCount: 1 });
+      message.error('The provided credentials are invalid.');
+    });
+  return loginRes && loginRes.data ? loginRes.data : null;
 };
 
 const getImage = image => {
@@ -121,8 +128,15 @@ export const getTrackedContent = async keyword => {
   return _.flatMap(result);
 };
 
-export const login = async () => {
-  const userData = await loginUser();
+const setLocalStrage = userData => {
+  if (userData) {
+    localStorage.setItem('accessToken', userData.access_token);
+    localStorage.setItem('refreshToken', userData.refresh_token);
+    localStorage.setItem(
+      'expiresDate',
+      userData.created_at + userData.expires_in
+    );
+  }
   const api = new Kitsu({
     headers: {
       Authorization: `Bearer ${userData.access_token}`,
@@ -130,4 +144,26 @@ export const login = async () => {
   });
 
   return Promise.all([api.self(), api]);
+};
+export const refreshToken = async () => {
+  const userData = await axios.post(
+    KITSU_URL,
+    querystring.stringify({
+      grant_type: 'refresh_token',
+      refresh_token: localStorage.getItem('refreshToken'),
+    })
+  );
+
+  return setLocalStrage(userData.data);
+};
+
+export const logout = () => {
+  localStorage.removeItem('accessToken');
+  localStorage.removeItem('refreshToken');
+  localStorage.removeItem('userId');
+  localStorage.removeItem('expiresDate');
+};
+export const login = async ({ email, password }) => {
+  const userData = await loginUser(email, password);
+  return userData ? setLocalStrage(userData) : { user: {}, api: {} };
 };
