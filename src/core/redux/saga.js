@@ -1,9 +1,11 @@
 import { all, call, put, takeLatest } from 'redux-saga/effects';
+import _ from 'lodash';
 
 import {
   getTrackedContent,
   login,
   refreshToken,
+  logout,
 } from '../providers/kitsu/kitsu';
 
 function* queryContent(action) {
@@ -14,9 +16,13 @@ function* queryContent(action) {
 
 function* kitsuLogin(action) {
   yield put({ type: 'LOGIN_INPROGRESS', payload: true });
-  const [user, api] = yield call(login, action.payload);
-  localStorage.setItem('userId', user.id);
-  yield put({ type: 'LOGIN_SUCCEEDED', payload: { user, api } });
+  const userData = yield call(login, action.payload);
+  if (!_.isEmpty(userData[0])) {
+    const [user, api] = userData;
+    localStorage.setItem('userId', user.id);
+    yield put({ type: 'LOGIN_SUCCEEDED', payload: { user, api } });
+  }
+  yield put({ type: 'LOGIN_FAIL' });
 }
 
 function* kitsuRefreshToken() {
@@ -29,10 +35,15 @@ function* kitsuRefreshToken() {
   });
 }
 
+function* kitsuLogout() {
+  yield call(logout);
+}
+
 export function* root() {
   yield all([
     takeLatest('CONTENT_SEARCH_REQUESTED', queryContent),
     takeLatest('LOGIN_REQUESTED', kitsuLogin),
     takeLatest('REFRESH_TOKEN', kitsuRefreshToken),
+    takeLatest('LOGOUT', kitsuLogout),
   ]);
 }

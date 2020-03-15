@@ -10,7 +10,7 @@ import { SearchView } from '../../components/searchView/searchView';
 import { GlobalStyle } from './globalStyle';
 import store from '../../../core/redux/store';
 import { Login } from '../../components/authentication/login';
-
+import { Logout } from '../../components/authentication/logout';
 import { checkCache } from '../../../core/providers/cache/cache';
 
 const StyledApp = styled.div`
@@ -29,7 +29,14 @@ const App = () => {
     <StyledApp>
       <GlobalStyle />
       <Header />
-      {kitsuUser ? <SearchView /> : <Login />}
+      {kitsuUser ? (
+        <>
+          <SearchView />
+          <Logout />
+        </>
+      ) : (
+        <Login />
+      )}
     </StyledApp>
   );
 };

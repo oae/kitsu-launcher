@@ -1,21 +1,26 @@
 import Kitsu from 'kitsu';
 import axios from 'axios';
 import querystring from 'querystring';
+import { message } from 'antd';
 
 import _ from 'lodash';
 
 const KITSU_URL = 'https://kitsu.io/api/oauth/token';
 const loginUser = async (username, password) => {
-  const loginRes = await axios.post(
-    KITSU_URL,
-    querystring.stringify({
-      grant_type: 'password',
-      username,
-      password,
-    })
-  );
-
-  return loginRes.data;
+  const loginRes = await axios
+    .post(
+      KITSU_URL,
+      querystring.stringify({
+        grant_type: 'password',
+        username,
+        password,
+      })
+    )
+    .catch(() => {
+      message.config({ maxCount: 1 });
+      message.error('The provided credentials are invalid.');
+    });
+  return loginRes && loginRes.data ? loginRes.data : null;
 };
 
 const getImage = image => {
@@ -151,8 +156,14 @@ export const refreshToken = async () => {
 
   return setLocalStrage(userData.data);
 };
+
+export const logout = () => {
+  localStorage.removeItem('accessToken');
+  localStorage.removeItem('refreshToken');
+  localStorage.removeItem('userId');
+  localStorage.removeItem('expiresDate');
+};
 export const login = async ({ email, password }) => {
   const userData = await loginUser(email, password);
-
-  return setLocalStrage(userData);
+  return userData ? setLocalStrage(userData) : { user: {}, api: {} };
 };

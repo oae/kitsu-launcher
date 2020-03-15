@@ -41,6 +41,11 @@ const kitsuReducer = (
         ...state,
         isLoggingIn: action.payload,
       };
+    case 'LOGIN_FAIL':
+      return {
+        ...state,
+        isLoggingIn: false,
+      };
     case 'LOGIN_SUCCEEDED':
       return {
         ...action.payload,
@@ -54,6 +59,11 @@ const kitsuReducer = (
       return {
         ...action.payload,
         isLoggingIn: true,
+      };
+    case 'LOGOUT':
+      return {
+        ...action.payload,
+        isLoggingIn: false,
       };
     default:
       return state;
