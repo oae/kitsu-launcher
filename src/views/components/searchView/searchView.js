@@ -2,8 +2,13 @@ import { Icon } from 'antd';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import debug from 'debug';
+import _ from 'lodash';
 import styled from 'styled-components';
+import { HotKeys, configure } from 'react-hotkeys';
 import { Content } from '../content/content';
+
+const logger = debug('search-view');
 
 const StyledSearchInput = styled.input`
   position: absolute;
@@ -56,7 +61,7 @@ const StyledSearchResults = styled(OverlayScrollbarsComponent)`
   }
 `;
 
-const SearchResults = ({ results }) => {
+const SearchResults = ({ results, selectedItem }) => {
   return (
     <StyledSearchResults
       options={{
@@ -69,7 +74,11 @@ const SearchResults = ({ results }) => {
       }}
     >
       {results.map(content => (
-        <Content content={content} key={content.id} />
+        <Content
+          isSelected={selectedItem === content.id}
+          content={content}
+          key={content.id}
+        />
       ))}
     </StyledSearchResults>
   );
@@ -89,27 +98,59 @@ const Loading = () => {
 
   return search.isLoading && <StyledLoading type="loading" />;
 };
-
 export const SearchView = () => {
   const kitsu = useSelector(state => state.kitsu);
   const search = useSelector(state => state.search);
+  const selectedItem = useSelector(state => state.selectedItem);
   const dispatch = useDispatch();
 
+  configure({
+    ignoreTags: [],
+  });
+
   return (
-    <StyledSearchView>
-      <SearchInput
-        onSearch={({ keyword }) =>
+    <HotKeys
+      keyMap={{ GO_DOWN: 'ArrowDown', GO_UP: 'ArrowUp' }}
+      handlers={{
+        GO_DOWN: e => {
+          e.preventDefault();
+          logger('GO_DOWN');
+          if (!search.result || search.result.length === 0) return;
+          const nextItemIndex =
+            _.findIndex(search.result, item => item.id === selectedItem) + 1;
           dispatch({
-            type: 'CONTENT_SEARCH_REQUESTED',
-            payload: {
-              keyword,
-              kitsu,
-            },
-          })
-        }
-      />
-      <Loading />
-      <SearchResults results={search.result} />
-    </StyledSearchView>
+            type: 'SELECT_ITEM',
+            payload: search.result[nextItemIndex % search.result.length].id,
+          });
+        },
+        GO_UP: e => {
+          e.preventDefault();
+          logger('GO_UP');
+          if (!search.result || search.result.length === 0) return;
+          const prevItemIndex =
+            _.findIndex(search.result, item => item.id === selectedItem) - 1;
+          dispatch({
+            type: 'SELECT_ITEM',
+            payload: search.result[prevItemIndex % search.result.length].id,
+          });
+        },
+      }}
+    >
+      <StyledSearchView>
+        <SearchInput
+          onSearch={({ keyword }) =>
+            dispatch({
+              type: 'CONTENT_SEARCH_REQUESTED',
+              payload: {
+                keyword,
+                kitsu,
+              },
+            })
+          }
+        />
+        <Loading />
+        <SearchResults selectedItem={selectedItem} results={search.result} />
+      </StyledSearchView>
+    </HotKeys>
   );
 };

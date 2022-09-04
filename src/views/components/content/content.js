@@ -195,7 +195,8 @@ const StyledContent = styled.div`
   }
 
   &:hover .mark-as-consumed,
-  &.active .mark-as-consumed {
+  &.selected .mark-as-consumed,
+  &:active .mark-as-consumed {
     width: 46px;
     cursor: pointer;
   }
@@ -230,10 +231,10 @@ const MarkAsConsumed = () => {
   );
 };
 
-export const Content = ({ content }) => {
+export const Content = ({ content, isSelected = false }) => {
   const { meta, progress } = content;
   return (
-    <StyledContent cover={meta.cover}>
+    <StyledContent cover={meta.cover} className={isSelected ? 'selected' : ''}>
       <MarkAsConsumed />
       <div className="content-info">
         <Poster src={meta.poster} />

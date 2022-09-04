@@ -19,7 +19,7 @@ function createWindow() {
     minimizable: false,
     maximizable: false,
     alwaysOnTop: true,
-    skipTaskbar: true,
+    // skipTaskbar: true,
     fullscreenable: false,
     autoResize: true,
     useContentSize: true,

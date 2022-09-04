@@ -51,7 +51,17 @@ const kitsuReducer = (
   }
 };
 
+const selectedItemReducer = (state = null, action) => {
+  switch (action.type) {
+    case 'SELECT_ITEM':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
 export const root = combineReducers({
   search: searchReducer,
   kitsu: kitsuReducer,
+  selectedItem: selectedItemReducer,
 });
